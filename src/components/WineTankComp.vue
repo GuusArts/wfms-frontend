@@ -1,9 +1,9 @@
 <!-- WineTank.vue -->
 
 <template>
-    <div class="wine-tank" :style="{ backgroundColor: color }">
-      <!-- Additional details for wine tank -->
-    </div>
+  <card class="card" @click="handleButtonClick">
+  <img v-bind:src=getImagePath() class="card-image"  alt="card image"/>
+  </card>
   </template>
   
   <script>
@@ -12,13 +12,24 @@
       color: String,
       // Add more props as needed for additional details
     },
-  };
+  
+  methods:{
+    getImagePath() {
+      return require('@/assets/0c48ce4592f03dcb5bdea9d68aa0835f.png');
+    },
+
+    handleButtonClick(){
+      console.log('Button is clicked')
+    }
+  }}
   </script>
   
   <style>
-  .wine-tank {
-    width: 100%;
-    height: 100%;
+  .card {
+    width: 10%;
+    height: 10%;
+    justify-content: center;
+    
   }
   </style>
   

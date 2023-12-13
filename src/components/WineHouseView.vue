@@ -1,20 +1,15 @@
 
 <template>
-    <div class="wine-room-container">
-      <WineTank
-        v-for="(room, roomIndex) in wineRooms"
-        :key="roomIndex"
-        :color="room.color"
-      />
-    </div>
+    <WineRoomCompVue></WineRoomCompVue>
   </template>
   
   <script>
-  import WineTank from '../components/WineTankComp.vue';
+import WineRoomCompVue from './WineRoomComp.vue';
+
   
   export default {
     components: {
-      WineTank,
+      WineRoomCompVue
     },
     data() {
       return {
@@ -23,6 +18,7 @@
           { color: 'lightgreen' },
           // Add more rooms as needed
         ],
+      
       };
     },
   };
