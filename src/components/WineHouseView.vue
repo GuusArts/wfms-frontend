@@ -1,36 +1,39 @@
-
 <template>
-    <WineRoomCompVue></WineRoomCompVue>
-  </template>
-  
-  <script>
+    <WineRoomCompVue
+      class="wine-room"
+      v-for="room in WineRooms"
+      :key="room.id"
+      :roomid="room.id"
+    ></WineRoomCompVue>
+</template>
+
+<script>
 import WineRoomCompVue from './WineRoomComp.vue';
 
-  
-  export default {
-    components: {
-      WineRoomCompVue
-    },
-    data() {
-      return {
-        wineRooms: [
-          { color: 'lightblue' },
-          { color: 'lightgreen' },
-          // Add more rooms as needed
-        ],
-      
-      };
-    },
-  };
-  </script>
-  
-  <style>
-  .wine-room-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: flex-start; /* Adjust as needed */
-    height: 100vh; /* 100% of the viewport height */
-  }
-  </style>
-  
+export default {
+  components: {
+    WineRoomCompVue,
+  },
+  data() {
+    return {
+      WineRooms: [
+        { roomid: 1, name: 'Room A', id: 1 },
+        { roomid: 2, name: 'Room B', id: 2 },
+        { roomid: 3, name: 'Room C', id: 3 },
+      ],
+    };
+  },
+};
+</script>
+
+<style>
+.wine-room-container {
+  margin: 100px;
+  height: auto;
+  background-color: rgb(255, 0, 0);
+  display: flex;
+  flex-wrap: wrap
+}
+
+
+</style>

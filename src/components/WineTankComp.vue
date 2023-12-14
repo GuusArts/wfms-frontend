@@ -1,9 +1,7 @@
 <!-- WineTank.vue -->
 
 <template>
-  <card class="card" @click="handleButtonClick">
-  <img v-bind:src=getImagePath() class="card-image"  alt="card image"/>
-  </card>
+  <img  v-bind:src=getImagePath() class="card"  alt="card image"/>
   </template>
   
   <script>
@@ -27,8 +25,8 @@
   <style>
   .card {
     width: 10%;
-    height: 10%;
-    justify-content: center;
+    height: 100%;
+ 
     
   }
   </style>
