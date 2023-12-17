@@ -32,7 +32,9 @@ export default {
   height: auto;
   background-color: rgb(255, 0, 0);
   display: flex;
-  flex-wrap: wrap
+  flex-wrap: wrap;
+
+  
 }
 
 
