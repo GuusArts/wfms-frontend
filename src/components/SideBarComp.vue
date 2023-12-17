@@ -4,6 +4,7 @@
   <div class="wave-sidebar">
     <div>
         <img v-bind:src=getWinehouseImagePath() class="icon"  alt="card image" @click="GoToWinehouse()">
+        <img v-bind:src=getWorkOrdersImagePath() class="icon"  alt="card image" @click="GoToWorkOrders()">
     </div>
     
   </div>
@@ -48,6 +49,10 @@ methods:{
     },
     GoToWinehouse(){
         this.$router.push('/Winehouse')
+    },
+
+    GoToWorkOrders(){
+      this.$router.push('/Workorders')
     }
 }
 })

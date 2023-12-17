@@ -1,8 +1,8 @@
 import {createWebHistory, createRouter} from "vue-router";
-import Dashboard from "../src/components/DashboardView.vue";
-import Winehouse from "../src/components/WineHouseView.vue"
-import Wineroom from "../src/components/WineRoomView.vue"
-import WineTank from "./view/WineTankConfView.vue"
+import Dashboard from "./views/DashboardView.vue";
+import Winehouse from "./views/WineHouseView.vue"
+import Wineroom from "./views/WineRoomView.vue"
+import WineTank from "./views/WineTankConfView.vue"
 
 
 const routes = [

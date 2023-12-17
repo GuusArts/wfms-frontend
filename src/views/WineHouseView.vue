@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import WineRoomCompVue from './WineRoomComp.vue';
+import WineRoomCompVue from '../components/WineRoomComp.vue';
 
 export default {
   components: {
