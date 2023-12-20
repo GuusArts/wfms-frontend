@@ -1,7 +1,7 @@
-// GenericChart.vue
+
 <template>
   <div>
-    <canvas ref="myChart" width="400" height="400"></canvas>
+    <canvas  ref="myChart" width="400" height="400"></canvas>
   </div>
 </template>
 

@@ -1,24 +1,29 @@
+<!-- YourParentComponent.vue -->
 <template>
   <div>
-  <button @click="openWorkOrderModal">open</button>
-  <work-orders-modal ref="workOrderModal"> </work-orders-modal>
+    <button @click="openWorkOrderModal()">Open Work Order Modal</button>
+    <work-order-modal ref="workOrderModal"></work-order-modal>
   </div>
 </template>
 
 <script>
-import WorkOrdersModal from '../components/WorkOrdersModalComp.vue'
+import WorkOrderModal from '../components/WorkOrdersModalComp.vue';
+
 export default {
-components:{
-  WorkOrdersModal
-},
-methods: {
+  components: {
+    WorkOrderModal,
+  },
+  mounted(){
+    console.log("workerordelmodal is mounted")
+  },
+  methods: {
     openWorkOrderModal() {
-      this.$refs.workOrderModal.openModal();
+      // Make sure that the component is mounted before trying to access it
+      if (this.$refs.workOrderModal) {
+        console.log("hellod")
+        this.$refs.workOrderModal.openModal();
+      }
     },
   },
-}
+};
 </script>
-
-<style>
-
-</style>

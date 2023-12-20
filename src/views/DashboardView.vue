@@ -38,13 +38,14 @@ export default {
           },
         ],
       },
-      // Add more data sets as needed
+
     };
   },
   methods: {
     async retrieveData() {
       try {
         
+      
         const temperatureData = await VinAIDataService.retrieveTemperatureData();
         const sideKettleTempData = await VinAIDataService.retrieveSideKettleTempData();
 
@@ -68,7 +69,7 @@ export default {
         this.refreshInterval = setInterval(() => {
           this.retrieveData();
         }, 5000);
-      }
+      } 
     },
   },
   mounted() {

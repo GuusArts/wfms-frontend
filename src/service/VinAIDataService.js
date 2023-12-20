@@ -25,6 +25,16 @@ class VinAIDataService {
       throw error;
     }
   }
-}
 
+
+  async RetrieveTankData(){
+    try {
+      const response = await axios.get(`${API_BASE_URL}/monitor/tank`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching Kettle data:", error);
+      throw error;
+    }
+  }
+}
 export default new VinAIDataService();
