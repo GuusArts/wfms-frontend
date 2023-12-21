@@ -1,27 +1,77 @@
 <template>
-    <WineRoomCompVue
+  <div v-if="WineRoomList && WineRoomList.length > 0">
+    <WineRoomCompVue @WineRoomCreated="RetrieveWinerooms"
       class="wine-room"
-      v-for="room in WineRooms"
+      v-for="room in WineRoomList"
       :key="room.id"
-      :roomid="room.id"
+      :name="room.name"
     ></WineRoomCompVue>
+  </div>
+
+  <div v-else>
+    <h1>No winerooms created. Make one below</h1>
+    <br>
+    <CreateWineRoomCompVue></CreateWineRoomCompVue>
+  </div>
+
+  <Button>Create WineTank</Button>
+  <Button @click="isModalVisible">Create WineRoom</Button>
 </template>
 
 <script>
+import VinAIDataService from '@/service/VinAIDataService';
 import WineRoomCompVue from '../components/WineRoomComp.vue';
+import CreateWineRoomCompVue from '@/components/CreateWineRoomComp.vue';
 
 export default {
   components: {
     WineRoomCompVue,
+    CreateWineRoomCompVue
   },
   data() {
     return {
-      WineRooms: [
-        { roomid: 1, name: 'Room A', id: 1 },
-        { roomid: 2, name: 'Room B', id: 2 },
-        { roomid: 3, name: 'Room C', id: 3 },
-      ],
+      WineRoomList: [],
+      WineTankList: [],
+      isModalVisible: false
     };
+  },
+
+  methods: {
+    RetrieveWinerooms() {
+      try {
+        VinAIDataService.RetrieveRoomData().then((response) => {
+          this.WineRoomList = response.data; 
+          console.log(this.WineRoomList);
+        });
+      } catch (err) {
+        document.getElementById("errorview").innerHTML = err.name;
+      }
+    },
+    RetrieveWineTanks() {
+      try {
+        VinAIDataService.RetrieveTankData().then((response) => {
+          this.WineTankList = response.data; // Update to response.data
+          console.log(response.data);
+        });
+      } catch (err) {
+        document.getElementById("errorview").innerHTML = err.name;
+      }
+    },
+  
+     
+  },
+    openWineRoomModal() {
+      // Set the visibility of the modal to true
+      this.isModalVisible = true;
+    },
+    closeWineRoomModal() {
+      // Set the visibility of the modal to false
+      this.isModalVisible = false;
+    },
+  
+  created() {
+    this.RetrieveWinerooms();
+    this.RetrieveWineTanks();
   },
 };
 </script>
@@ -33,9 +83,5 @@ export default {
   background-color: rgb(255, 0, 0);
   display: flex;
   flex-wrap: wrap;
-
-  
 }
-
-
 </style>

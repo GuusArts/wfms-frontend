@@ -45,7 +45,6 @@ export default {
     async retrieveData() {
       try {
         
-      
         const temperatureData = await VinAIDataService.retrieveTemperatureData();
         const sideKettleTempData = await VinAIDataService.retrieveSideKettleTempData();
 
