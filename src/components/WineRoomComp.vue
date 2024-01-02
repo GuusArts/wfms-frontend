@@ -1,6 +1,6 @@
 <template>
   <div class="wineroom">
-    <p class=" wineroom-text">Room {{ roomid }}</p>
+    <p class=" wineroom-text">Room {{ name }}</p>
     <wine-tank-comp :class="winetanks" 
     ></wine-tank-comp>
   </div>

@@ -1,54 +1,50 @@
 <!-- GenericChart.vue -->
 <template>
   <div>
-    <canvas ref="chartCanvas"></canvas>
+    <canvas ref="canvasRef"></canvas>
   </div>
 </template>
 
 <script>
-import { Chart } from 'chart.js/auto';
+import Chart from 'chart.js/auto';
 import 'chartjs-adapter-moment';
+import {ref, onMounted, onBeforeUnmount, watch, inject} from 'vue';
 export default {
   props: {
-    data: {
-      type: Object,
-      required: true,
-    },
     type: {
       type: String,
-      required: true,
+      default: 'line',
     },
     options: {
       type: Object,
       default: () => ({}),
     },
+    dataKey: {
+      type: String,
+      required: true,
+    }
   },
-  mounted() {
-    this.renderChart();
-  },
-  watch: {
-    data: 'updateChart',
-    type: 'updateChart',
-    options: 'updateChart',
-  },
-  methods: {
-    renderChart() {
-      this.chart = new Chart(this.$refs.chartCanvas, {
-        type: this.type,
-        data: this.data,
-        options: this.options,
+  setup(props) {
+    let chart = null;
+    const canvasRef = ref();
+
+    const chartData = inject(props.dataKey); // shallowRef
+    const chartOptions = {};
+
+    onMounted(() => {
+      chart = new Chart(canvasRef.value, {
+        data: chartData.value,
+        type: 'line',
+        options: chartOptions,
       });
-    },
-    updateChart() {
-      if (this.chart) {
-        this.chart.destroy();
-        this.renderChart();
-      }
-    },
-  },
-  beforeUnmount() {
-    if (this.chart) {
-      this.chart.destroy();
+    });
+
+    onBeforeUnmount(() => chart?.destroy());
+
+    watch(chartData, () => chart?.update());
+
+    return {
+      canvasRef,
     }
   },
 };

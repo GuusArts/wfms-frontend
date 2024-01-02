@@ -15,7 +15,7 @@
   </div>
 
   <Button>Create WineTank</Button>
-  <Button @click="isModalVisible">Create WineRoom</Button>
+  <Button @click="GoToCreateWineRoom">Create WineRoom</Button>
 </template>
 
 <script>
@@ -32,7 +32,6 @@ export default {
     return {
       WineRoomList: [],
       WineTankList: [],
-      isModalVisible: false
     };
   },
 
@@ -58,21 +57,14 @@ export default {
       }
     },
   
-     
-  },
-    openWineRoomModal() {
-      // Set the visibility of the modal to true
-      this.isModalVisible = true;
+  GoToCreateWineRoom(){
+        this.$router.push('/CreateWineRoom')
     },
-    closeWineRoomModal() {
-      // Set the visibility of the modal to false
-      this.isModalVisible = false;
-    },
-  
+
   created() {
     this.RetrieveWinerooms();
     this.RetrieveWineTanks();
-  },
+   } },
 };
 </script>
 

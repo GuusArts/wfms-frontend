@@ -1,22 +1,25 @@
 <template>
   <div class="dashboard">
-    <ChartComponent title="Temperature" :chartData="temperatureChartData" :chartOptions="temperatureChartOptions" />
-    <ChartComponent title="Side Kettle Temperature" :chartData="sideKettleChartData" :chartOptions="sideKettleChartOptions" />
+    <GenericChart title="Temperature" :data-key="temperatureKey" />
+    <GenericChart title="Side Kettle Temperature" :data-key="sideKettleKey" />
     <!-- Add more ChartComponent instances as needed -->
   </div>
 </template>
 
 <script>
 import VinAIDataService from "../service/VinAIDataService";
-import ChartComponent from '../components/GenericChart.vue';
+import GenericChart from '../components/GenericChart.vue';
+import {ref, onMounted, onBeforeUnmount, shallowRef, triggerRef, provide} from 'vue';
 
 export default {
   components: {
-    ChartComponent,
+    GenericChart,
   },
-  data() {
-    return {
-      temperatureChartData: {
+  setup() {
+    const refreshInterval = ref();
+
+    const temperatureKey = 'temp';
+    const temperatureChartData = shallowRef({
         labels: [],
         datasets: [
           {
@@ -26,9 +29,11 @@ export default {
             fill: false,
           },
         ],
-      },
-      sideKettleChartData: {
-        labels: [],
+    });
+    
+    const sideKettleKey = 'sideKettle';
+    const sideKettleChartData = shallowRef({
+      labels: [],
         datasets: [
           {
             label: 'Side Kettle Temperature',
@@ -37,46 +42,58 @@ export default {
             fill: false,
           },
         ],
-      },
+      });
 
-    };
-  },
-  methods: {
-    async retrieveData() {
+
+    provide(temperatureKey, temperatureChartData);
+    provide(sideKettleKey, sideKettleChartData);
+
+    async function retrieveData() {
       try {
         
         const temperatureData = await VinAIDataService.retrieveTemperatureData();
+        const temperatureTimestamp = new Date(temperatureData.timestamp);
+
         const sideKettleTempData = await VinAIDataService.retrieveSideKettleTempData();
+        const sideKettleTempTimestamp = new Date(sideKettleTempData.timestamp);
 
-        // Update chart data
-        this.temperatureChartData.labels.push(new Date(temperatureData.timestamp));
-        this.temperatureChartData.datasets[0].data.push(temperatureData.temp);
+        temperatureChartData.value.labels.push(temperatureTimestamp.toLocaleString());
+        temperatureChartData.value.datasets[0].data.push(temperatureData.temp);
 
-        this.sideKettleChartData.labels.push(new Date(sideKettleTempData.timestamp));
-        this.sideKettleChartData.datasets[0].data.push(sideKettleTempData.temp);
+        sideKettleChartData.value.labels.push(sideKettleTempTimestamp.toLocaleString());
+        sideKettleChartData.value.datasets[0].data.push(sideKettleTempData.temp);
+
+        triggerRef(temperatureChartData);
+        triggerRef(sideKettleChartData);
         
         // Add more data sets as needed
 
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-    },
-    setupAutoRefresh() {
+    }
+
+    function setupAutoRefresh() {
       // Check if the interval is already set up
-      if (!this.refreshInterval) {
+      if (refreshInterval.value == null) {
         // Refresh data every 5 seconds (adjust as needed)
-        this.refreshInterval = setInterval(() => {
-          this.retrieveData();
-        }, 5000);
+        refreshInterval.value = setInterval(() => retrieveData(), 5000);
       } 
-    },
-  },
-  mounted() {
-    this.retrieveData();
-    this.setupAutoRefresh();
-  },
-  beforeUnmount() {
-    clearInterval(this.refreshInterval);
+    }
+
+    onMounted(async () => {
+      await retrieveData();
+      setupAutoRefresh();
+    });
+
+    onBeforeUnmount(() => {
+      clearInterval(refreshInterval.value);
+    });
+
+    return {
+      temperatureKey,
+      sideKettleKey,
+    }
   },
 };
 </script>

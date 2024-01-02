@@ -3,6 +3,7 @@ import Dashboard from "./views/DashboardView.vue";
 import Winehouse from "./views/WineHouseView.vue"
 import Wineroom from "./views/WineRoomView.vue"
 import WineTank from "./views/WineTankConfView.vue"
+import CreateWineRoom from "./views/CreateWineRoomView.vue"
 
 
 const routes = [
@@ -24,6 +25,10 @@ const routes = [
     {
         path: "/WineTank",
         component: WineTank
+    },
+    {
+        path: "/CreateWineRoom",
+        component: CreateWineRoom
     }
 ];
 
