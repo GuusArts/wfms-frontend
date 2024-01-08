@@ -3,12 +3,21 @@
 <div class="header">
     <a href="#default" class="logo">VINAI</a>
     <div class="header-right">
-      <a class="active" href="#home">Home</a>
-      <a href="#contact">Contact</a>
-      <a href="#about">About</a>
+      <a class="active" @click="GoHome()">Home</a>
     </div>
   </div>
 </template>
+
+<script>
+
+export default ({
+  methods:{
+  GoHome() {
+    this.$router.push('/home')
+  },
+}})
+
+</script>
 
 <style>
 /* Style the header with a grey background and some padding */

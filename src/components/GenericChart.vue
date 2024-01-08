@@ -1,85 +1,55 @@
-// GenericChart.vue
+<!-- GenericChart.vue -->
 <template>
   <div>
-    <canvas ref="myChart" width="400" height="400"></canvas>
+    <canvas ref="canvasRef"></canvas>
   </div>
 </template>
 
 <script>
-import { Chart, registerables } from 'chart.js/auto';
+import Chart from 'chart.js/auto';
 import 'chartjs-adapter-moment';
-
+import {ref, onMounted, onBeforeUnmount, watch, inject} from 'vue';
 export default {
   props: {
-    chartOptions: {
+    type: {
+      type: String,
+      default: 'line',
+    },
+    options: {
       type: Object,
       default: () => ({}),
     },
-    chartData: {
-      type: Object,
+    dataKey: {
+      type: String,
       required: true,
-    },
+    }
   },
-  data() {
+  setup(props) {
+    let chart = null;
+    const canvasRef = ref();
+
+    const chartData = inject(props.dataKey); // shallowRef
+    const chartOptions = {};
+
+    onMounted(() => {
+      chart = new Chart(canvasRef.value, {
+        data: chartData.value,
+        type: 'line',
+        options: chartOptions,
+      });
+    });
+
+    onBeforeUnmount(() => chart?.destroy());
+
+    watch(chartData, () => chart?.update());
+
     return {
-      chart: null,
-      shouldUpdateChart: false,
-    };
-  },
-  mounted() {
-    this.createChart();
-  },
-  beforeUnmount() {
-    this.destroyChart();
-  },
-  watch: {
-    chartData: {
-      handler() {
-        // Set the flag to true to indicate that the chart should be updated
-        this.shouldUpdateChart = true;
-      },
-      deep: true,
-    },
-  },
-  methods: {
-    createChart() {
-      const ctx = this.$refs.myChart;
-      if (ctx) {
-        this.chart = new Chart(ctx, {
-          type: 'line',
-          data: this.chartData,
-          options: this.chartOptions,
-          plugins: [registerables],
-        });
-      }
-    },
-
-    updateChart() {
-      if (this.chart && this.shouldUpdateChart) {
-        // Destroy the existing chart to avoid memory leaks
-        this.chart.destroy();
-
-        // Create a new chart with updated data
-        this.createChart();
-
-        // Optionally, you can directly update the existing chart data without destroying and recreating
-        // this.chart.data.labels = this.chartData.labels;
-        // this.chart.data.datasets[0].data = this.chartData.datasets[0].data;
-
-        // Update the chart to reflect the changes
-        this.chart.update();
-
-        // Reset the flag after updating the chart
-        this.shouldUpdateChart = false;
-      }
-    },
-
-    destroyChart() {
-      if (this.chart) {
-        this.chart.destroy();
-      }
-    },
+      canvasRef,
+    }
   },
 };
 </script>
 
+<style scoped>
+/* Add your component styles here */
+</style>
