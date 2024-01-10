@@ -1,7 +1,7 @@
 <template>
     <div class="wineroom-form-container">
       <h2>Create a Wineroom</h2>
-      <form @submit.prevent="createWineroom" class="wineroom-form">
+      <form @submit.prevent="createWineroom()" class="wineroom-form">
         <div class="form-group">
           <label for="wineroomName">Wineroom Name:</label>
           <input
@@ -32,7 +32,7 @@ import VinAIDataService from '@/service/VinAIDataService';
     data() {
       return {
         wineroomName: '',
-        wineroomColor: '#ff5733', // Default color
+        wineroomColor: '#ff5733', 
         
       };
     },
@@ -40,8 +40,9 @@ import VinAIDataService from '@/service/VinAIDataService';
     visible: Boolean,},
     
     methods: {
+      // This metod creates a wineroom object and sends it to the backend
       createWineroom() {
-        // You can perform additional validation or API calls here
+     
         const newWineroom = {
           name: this.wineroomName,
           color: this.wineroomColor,
@@ -55,7 +56,7 @@ import VinAIDataService from '@/service/VinAIDataService';
 
   
         this.wineroomName = '';
-        this.wineroomColor = '#ff5733'; // Reset color to default
+        this.wineroomColor = '#ff5733'; 
       },
     },
   };

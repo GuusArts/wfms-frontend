@@ -11,7 +11,7 @@ socket.onopen = function () {
       id: 'test-command',
       command: 'ranges',
       query: {
-        fields: ["battlebot64/Kettle Sensor/value[degC]"],
+        fields: ["battlebot64/Kettle Sensor/value[degC]","battlebot64/Kettle Actuator/desiredState"],
         duration: '1d',
       },
     }),

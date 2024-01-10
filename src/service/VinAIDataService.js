@@ -39,7 +39,7 @@ class VinAIDataService {
 
   async CreateWineRoom(wineroom){
     try{
-    await axios.post(`${API_BASE_URL}/monitor/createwineroom`, wineroom)}
+    await axios.post(`${API_BASE_URL}/monitor/create/wineroom`, wineroom)}
     catch(error){
       console.error(error)
     }
