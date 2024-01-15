@@ -4,6 +4,7 @@ import Winehouse from "./views/WineHouseView.vue"
 import Wineroom from "./views/WineRoomView.vue"
 import WineTank from "./views/WineTankConfView.vue"
 import CreateWineRoom from "./views/CreateWineRoomView.vue"
+import CreateWineTank from "./views/CreateWineTankView.vue"
 
 
 const routes = [
@@ -27,8 +28,12 @@ const routes = [
         component: WineTank
     },
     {
-        path: "/CreateWineRoom",
+        path: "/Create/Wineroom",
         component: CreateWineRoom
+    },
+    {
+        path: "/Create/Winetank",
+        component: CreateWineTank
     }
 ];
 

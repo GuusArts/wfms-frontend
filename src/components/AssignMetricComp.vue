@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import VinAIDataService from "../service/VinAIDataService";
 export default {
 
 }

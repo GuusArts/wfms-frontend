@@ -1,8 +1,7 @@
 <template>
   <div class="wineroom">
-    <p class=" wineroom-text">Room {{ name }}</p>
-    <wine-tank-comp :class="winetanks" 
-    ></wine-tank-comp>
+    <p class="wineroom-text">Room {{ name }}</p>
+    <wine-tank-comp v-for="tank in wineTanks" :id="tank.id" :name="tank.name" :sparkID="sparkID" :variety="variety" :volume="volume" :key="tank.id" :WineCategory="WineCategory" :wineroomID="wineroomID"/>
   </div>
 </template>
 
@@ -10,18 +9,12 @@
 import WineTankComp from './WineTankComp.vue';
 
 export default {
-  props: ['name'],
+  props: ['name', 'wineTanks'],
   components: {
     WineTankComp
   },
   data() {
-    return {
-    };
-  },
-  methods: {
-    getRoomWineTanks(roomId) {
-      return this.wineTanks.filter((tank) => tank.roomid === roomId);
-    },
+    return {};
   },
 };
 </script>
@@ -32,19 +25,16 @@ export default {
   margin: 20px; /* Adjust the value according to your needs */
   background-color: #AEE3FF;
   height: 200px;
-  margin:150px;
+  margin: 150px;
   border-radius: 15px;
-  
-
-
 }
 
-.wineroom-text{
-color: white;
-margin: 10px;
+.wineroom-text {
+  color: white;
+  margin: 10px;
 }
 
-.winetanks{
+.winetanks {
   margin: 10px;
 }
 </style>

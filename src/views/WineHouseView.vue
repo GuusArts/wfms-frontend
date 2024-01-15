@@ -1,79 +1,81 @@
 <template>
-  <div v-if="WineRoomList && WineRoomList.length > 0">
-    <WineRoomCompVue @WineRoomCreated="RetrieveWinerooms"
-      class="wine-room"
-      v-for="room in WineRoomList"
-      :key="room.id"
-      :name="room.name"
-    ></WineRoomCompVue>
-  </div>
+  <div>
+    <div v-if="WineRoomList.length > 0">
+      <WineRoomCompVue
+        v-for="room in WineRoomList"
+        :key="room.id"
+        :name="room.name"
+      >
+        <!-- Display wine tanks for each wineroom -->
+        <div v-if="room.wineTanks && room.wineTanks.length > 0">
+          <h2>Wine Tanks for {{ room.name }}</h2>
+          <ul>
+            <li v-for="tank in room.wineTanks" :key="tank.id">{{ tank.name }}</li>
+          </ul>
+        </div>
+        <div v-else>
+          <p>No wine tanks available for {{ room.name }}</p>
+        </div>
+      </WineRoomCompVue>
+    </div>
 
-  <div v-else>
-    <h1>No winerooms created. Make one below</h1>
-    <br>
-    <CreateWineRoomCompVue></CreateWineRoomCompVue>
-  </div>
+    <div v-else>
+      <h1>No winerooms created. Make one below</h1>
+      <br />
+      <CreateWineRoomCompVue></CreateWineRoomCompVue>
+    </div>
 
-  <Button>Create WineTank</Button>
-  <Button @click="GoToCreateWineRoom">Create WineRoom</Button>
+    <!-- Other buttons or components -->
+  </div>
 </template>
 
 <script>
-import VinAIDataService from '@/service/VinAIDataService';
-import WineRoomCompVue from '../components/WineRoomComp.vue';
-import CreateWineRoomCompVue from '@/components/CreateWineRoomComp.vue';
+import { reactive } from 'vue';
+import VinAIDataService from "@/service/VinAIDataService";
+import WineRoomCompVue from "../components/WineRoomComp.vue";
 
 export default {
   components: {
     WineRoomCompVue,
-    CreateWineRoomCompVue
   },
+
   data() {
     return {
       WineRoomList: [],
-      WineTankList: [],
     };
   },
 
   methods: {
-    RetrieveWinerooms() {
+    async retrieveWineTanksForWineroom(wineroom) {
       try {
-        VinAIDataService.RetrieveRoomData().then((response) => {
-          this.WineRoomList = response.data; 
-          console.log(this.WineRoomList);
-        });
-      } catch (err) {
-        document.getElementById("errorview").innerHTML = err.name;
+        const wineTanks = await VinAIDataService.RetrieveWineTanksByWineRoomId(wineroom.id);
+        console.log(wineTanks)
+        wineroom.wineTanks = reactive(wineTanks);
+      } catch (error) {
+        console.error("Error retrieving wine tanks:", error);
+        // Handle error as needed
       }
     },
-    RetrieveWineTanks() {
+
+    async retrieveWineroomsWithWineTanks() {
       try {
-        VinAIDataService.RetrieveTankData().then((response) => {
-          this.WineTankList = response.data; // Update to response.data
-          console.log(response.data);
-        });
-      } catch (err) {
-        document.getElementById("errorview").innerHTML = err.name;
+        const response = await VinAIDataService.RetrieveRoomData();
+        const winerooms = response.data
+        console.log(winerooms)
+        for (const room of winerooms) {
+          await this.retrieveWineTanksForWineroom(room);
+        }
+        this.WineRoomList = winerooms;
+      } catch (error) {
+        console.error("Error retrieving winerooms with wine tanks:", error);
+        // Handle error as needed
       }
     },
-  
-  GoToCreateWineRoom(){
-        this.$router.push('/CreateWineRoom')
-    },
+  },
 
   created() {
-    this.RetrieveWinerooms();
-    this.RetrieveWineTanks();
-   } },
+   
+    this.retrieveWineroomsWithWineTanks();
+  },
 };
 </script>
-
-<style>
-.wine-room-container {
-  margin: 100px;
-  height: auto;
-  background-color: rgb(255, 0, 0);
-  display: flex;
-  flex-wrap: wrap;
-}
-</style>

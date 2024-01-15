@@ -4,7 +4,7 @@
   <div class="image-container" @mouseenter="showOverlay = true" @mouseleave="showOverlay= false" @click="showModal= true">
   <p>{{tankname }}</p>
   <img v-bind:src=getImagePath() class="card-image"  alt="card image" @click="handleButtonClick()">
-  <p class="text">{{ capacity }}</p>
+  <p class="text">{{ volume }}</p>
   <div v-if="showOverlay" class="overlay">
   <p class="overlay-text">More info</p>
   </div>
@@ -14,7 +14,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">{{ tankname }}</h5>
+            <h5 class="modal-title">{{ name }}</h5>
       
             <button type="button" class="close" @click="showModal = false" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -45,7 +45,7 @@
         showModal: false
       };
     },
-    props: ['tankname', 'capacity', 'KindofWine', 'KindofGrape', 'id'],
+    props: ['name', 'sparkID', 'WineCategory', 'variety', 'id', 'volume', 'wineroomID'],
     methods:{
     getImagePath() {
       return require('@/assets/0c48ce4592f03dcb5bdea9d68aa0835f.png');
